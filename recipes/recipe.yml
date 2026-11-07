@@ -1,17 +1,25 @@
 name: secure-macos-silverblue
-description: "Mon OS immuable basé uniquement sur Flatpaks"
-base-image: ghcr.io/fedora-italy/silverblue-main
-image-version: 41
+description: "Système immuable ultra-sécurisé basé sur Fedora Silverblue avec interface macOS et applications exclusives Flatpak."
+base-image: ghcr.io/blue-build/base-images/fedora-silverblue
+image-version: 45
 
 modules:
-  # Configuration automatique de Flathub et applications en bac à sable
+  # Configuration de Flathub et installation des applications essentielles en mode sécurisé
   - type: default-flatpaks
-    notify: true
-    system:
-      repo-url: https://flathub.org
-      repo-name: flathub
-      repo-title: "Flathub"
-      install:
-        - org.mozilla.firefox
-        - com.github.tchx84.Flatseal
-        - io.github.flattool.Warehouse
+    configurations:
+      - scope: system
+        repo:
+          url: https://dl.flathub.org/repo/flathub.flatpakrepo
+          name: flathub
+          title: "Flathub"
+        install:
+          - org.mozilla.firefox
+          - com.github.tchx84.Flatseal
+          - io.github.flattool.Warehouse
+
+  # Intégration native des extensions GNOME pour l'ergonomie et le look macOS
+  - type: gnome-extensions
+    install:
+      - dash-to-dock@micxgx.gmail.com
+      - blur-my-shell@aunetx
+      - user-theme@gnome-shell-extensions.gcampax.github.com
