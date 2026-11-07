@@ -1,8 +1,7 @@
-# Fichier .github/workflows/build.yml corrigé
 name: bluebuild
 on:
   schedule:
-    - cron: "0 17 * * 1" # build weekly at 17:00 on Monday
+    - cron: "0 17 * * 1"
   push:
     paths-ignore:
       - "README.md"
@@ -26,4 +25,4 @@ jobs:
         uses: blue-build/github-action@v1
         with:
           recipe: ${{ matrix.recipe }}
-          cosign_private_key: "" # Laisse vide pour désactiver la signature obligatoire
+          push: false
