@@ -1,35 +1,23 @@
 name: secure-macos-silverblue
-description: "Système immuable ultra-sécurisé basé sur Fedora Silverblue 45 avec interface style macOS et applications exclusives Flatpak."
+description: "Mon OS immuable style macOS basé uniquement sur Flatpaks"
 base-image: ghcr.io/blue-build/base-images/fedora-silverblue
-image-version: 45
+image-version: 41 # Version stable actuelle très bien supportée
 
 modules:
-  - type: files
-    files:
-      - source: system
-        destination: /
-
-  # Configuration de Flathub et installation des applications essentielles en sandbox
+  # Configuration automatique de Flathub et blocage des paquets classiques
   - type: default-flatpaks
-    configurations:
-      - scope: system
-        repo:
-          url: https://dl.flathub.org/repo/flathub.flatpakrepo
-          name: flathub
-          title: "Flathub"
-        install:
-          - org.mozilla.firefox
-          - com.github.tchx84.Flatseal
-          - io.github.flattool.Warehouse
+    notify: true
+    system:
+      repo-url: https://flathub.org
+      repo-name: flathub
+      repo-title: "Flathub"
+      install:
+        - org.mozilla.firefox
+        - com.github.tchx84.Flatseal
+        - io.github.flattool.Warehouse
 
-  # Intégration native des extensions GNOME pour l'ergonomie macOS
+  # Installation des extensions GNOME pour recréer l'ergonomie Mac
   - type: gnome-extensions
     install:
-      - dash-to-dock@micxgx.gmail.com
+      - dash-to-dock@://gmail.com
       - blur-my-shell@aunetx
-      - user-theme@gnome-shell-extensions.gcampax.github.com
-
-  # Surcharges de configuration (GSettings) pour appliquer les thèmes et comportements initiaux
-  - type: gschema-overrides
-    include:
-      - zz1-macos-look.gschema.override
